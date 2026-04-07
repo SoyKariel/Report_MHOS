@@ -45,7 +45,7 @@ export const construirWorkbook = async (reportData) => {
       ws.addImage(headerId, {
         tl: { col: 0, row: fila },
         br: { col: 10, row: fila + 3 }, 
-        editAs: 'oneCell'
+        editAs: 'absolute'
       });
     });
   }
@@ -60,7 +60,7 @@ export const construirWorkbook = async (reportData) => {
       ws.addImage(footerId, {
         tl: { col: 2, row: fila },
         br: { col: 10, row: fila + 3}, 
-        editAs: 'oneCell'
+        editAs: 'absolute'
       });
     });
   }
@@ -70,8 +70,8 @@ export const construirWorkbook = async (reportData) => {
   // ---------------------------------------------------------
 
   // --- PÁGINA 1 ---
-  ws.getCell('D6').value = reportData.serial;
-  ws.getCell('D7').value = reportData.date;
+  ws.getCell('D5').value = reportData.serial;
+  ws.getCell('D6').value = reportData.date;
   ws.getCell('C8').value = reportData.client;
   ws.getCell('C10').value = reportData.direccion;
   ws.getCell('D13').value = reportData.contrato;
@@ -147,23 +147,25 @@ export const construirWorkbook = async (reportData) => {
   // ---------------------------------------------------------
   // 3. INYECCIÓN FOTOS DE EVIDENCIA
   // ---------------------------------------------------------
-  const addImageToExcel = (base64Str, celda) => {
+  const addImageToExcel = (base64Str, col, row) => {
     if(!base64Str) return;
     try {
       const imgId = workbook.addImage({ base64: base64Str, extension: 'jpeg' });
-      ws.addImage(imgId, { tl: celda, ext: { width: 180, height: 180 } });
+      ws.addImage(imgId, { tl: { col, row }, ext: { width: 180, height: 180 }, editAs: 'absolute' });
     } catch(e) { console.error(e) }
   };
 
   if(reportData.fotos) {
-    addImageToExcel(reportData.fotos.antes1, 'B142');
-    addImageToExcel(reportData.fotos.antes2, 'C142');
-    addImageToExcel(reportData.fotos.antes3, 'E142');
-    addImageToExcel(reportData.fotos.durante1, 'G142');
-    addImageToExcel(reportData.fotos.durante2, 'J142');
-    addImageToExcel(reportData.fotos.despues1, 'B155');
-    addImageToExcel(reportData.fotos.despues2, 'D155');
-    addImageToExcel(reportData.fotos.etiqueta, 'H155');
+  addImageToExcel(reportData.fotos.antes1, 1, 141); // A142
+  addImageToExcel(reportData.fotos.antes2, 2, 141); // B142
+  addImageToExcel(reportData.fotos.antes3, 3, 141); // C142
+  
+  addImageToExcel(reportData.fotos.durante1, 6, 141); // F142
+  addImageToExcel(reportData.fotos.durante2, 9, 141); // I142
+  
+  addImageToExcel(reportData.fotos.despues1, 1, 154); // A155
+  addImageToExcel(reportData.fotos.despues2, 2, 154); // B155
+  addImageToExcel(reportData.fotos.etiqueta, 8, 154); // G155
   }
 
   // ---------------------------------------------------------

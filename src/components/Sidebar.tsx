@@ -90,7 +90,9 @@ export default function Sidebar({ currentUser, onLogout, activeTab, setActiveTab
 function NavItem({ icon, label, active, onClick }: { icon: React.ReactElement, label: string, active: boolean, onClick: () => void }) {
   return (
     <button onClick={onClick} className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 text-sm text-left group ${active ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 font-bold' : 'hover:bg-slate-800/50 hover:text-white text-slate-400 font-semibold'}`}>
-      {React.cloneElement(icon, { className: `w-5 h-5 transition-transform ${active ? 'scale-110' : 'group-hover:scale-110'}` })}
+      {React.cloneElement(icon as React.ReactElement<any>, { 
+  className: `w-5 h-5 transition-transform ${active ? 'scale-110' : 'group-hover:scale-110'}` 
+})}
       <span>{label}</span>
     </button>
   );

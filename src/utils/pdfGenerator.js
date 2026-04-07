@@ -11,6 +11,7 @@ export const generarPDF = async (reportData) => {
     // 2. Prepararlo para enviarlo a nuestra API de conversión
     const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const formData = new FormData();
+    
     formData.append('file', blob, 'temp.xlsx');
 
     alert("Generando PDF con LibreOffice... Esto puede tomar unos segundos.");

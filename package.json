@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "gh-pages -d out" 
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -t -d out"
   },
-  
   "dependencies": {
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",

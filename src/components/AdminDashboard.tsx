@@ -27,7 +27,7 @@ export default function AdminDashboard({ sections, reports, messages, setMessage
   const setCurrentTab = setActiveTab !== undefined ? setActiveTab : setLocalActiveTab;
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const filteredReports = reports.filter((r: Report) => 
+  const filteredReports = reports?.filter((r: Report) => 
     (r.serial && r.serial.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (r.client && r.client.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (r.jobName && r.jobName.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -66,12 +66,12 @@ export default function AdminDashboard({ sections, reports, messages, setMessage
                 </div>
                 <div className="hidden sm:flex items-center gap-3 bg-indigo-50 px-4 py-2.5 rounded-xl border border-indigo-100">
                   <BarChart className="w-5 h-5 text-indigo-600"/>
-                  <span className="font-bold text-indigo-900 text-sm">{filteredReports.length} Reportes Totales</span>
+                  <span className="font-bold text-indigo-900 text-sm">{(filteredReports?.length || 0)} Reportes Totales</span>
                 </div>
               </div>
             </div>
             
-            {sections.length === 0 ? (
+            {(sections?.length || 0) === 0 ? (
               <div className="text-center py-16 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
                   <FolderPlus className="w-8 h-8 text-slate-400" />
@@ -82,11 +82,11 @@ export default function AdminDashboard({ sections, reports, messages, setMessage
             ) : (
               <div className="space-y-4">
                 {sections.map((section: Section) => {
-                  const secReps = filteredReports.filter((r: Report) => r.sectionId === section.id);
-                  if (searchTerm && secReps.length === 0) return null;
+                  const secReps = filteredReports?.filter((r: Report) => r.sectionId === section.id);
+                  if (searchTerm && (secReps?.length || 0) === 0) return null;
                   return <AccordionItem key={section.id} section={section} reports={secReps} />;
                 })}
-                {searchTerm && filteredReports.length === 0 && (
+                {searchTerm && (filteredReports?.length || 0) === 0 && (
                   <div className="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
                     <Search className="w-10 h-10 mx-auto text-slate-300 mb-3" />
                     <p className="text-slate-500 font-bold">No se encontraron reportes</p>
@@ -132,7 +132,7 @@ function TabButton({ active, onClick, icon, label }: { active: boolean; onClick:
       className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl font-bold text-sm transition-all whitespace-nowrap shrink-0
         ${active ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 shadow-sm'}`}
     >
-      {React.cloneElement(icon, { className: 'w-5 h-5' })}
+      {React.cloneElement(icon as React.ReactElement<any>, { className: 'w-5 h-5' })}
       {label}
     </button>
   );
@@ -154,7 +154,7 @@ function AccordionItem({ section, reports }: { section: Section; reports: Report
           <div className="text-left">
             <span className="block font-black text-slate-800 text-lg">{section.name}</span>
             <span className="text-xs text-slate-500 font-bold mt-0.5 inline-block bg-slate-100 px-2 py-0.5 rounded-md">
-              {reports.length} {reports.length === 1 ? 'documento' : 'documentos'}
+              {(reports?.length || 0)} {((reports?.length || 0) === 1 ? 'documento' : 'documentos')}
             </span>
           </div>
         </div>
@@ -165,7 +165,7 @@ function AccordionItem({ section, reports }: { section: Section; reports: Report
       
       {isOpen && (
         <div className="p-4 md:p-6 bg-slate-50 border-t border-slate-100">
-          {reports.length === 0 ? (
+          {(reports?.length || 0) === 0 ? (
             <p className="text-sm text-slate-400 font-medium text-center py-8">Esta carpeta está vacía.</p>
           ) : (
             <div className="grid grid-cols-1 gap-4">
@@ -351,7 +351,7 @@ function UserManager({ users }: { users: User[] }) {
                    </td>
                  </tr>
                ))}
-               {users.length === 0 && (
+               {(users?.length || 0) === 0 && (
                  <tr>
                    <td colSpan={4} className="px-6 py-10 text-center text-slate-400 font-medium italic">No hay usuarios registrados.</td>
                  </tr>
