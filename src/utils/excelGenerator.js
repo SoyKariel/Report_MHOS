@@ -43,7 +43,7 @@ export const construirWorkbook = async (reportData) => {
     filasHeader.forEach(fila => {
       try { ws.mergeCells(`A${fila + 1}:I${fila + 3}`); } catch(e) {}
       ws.addImage(headerId, {
-        tl: { col: 0, row: fila },
+        tl: { col: 1, row: fila },
         br: { col: 10, row: fila + 3 }, 
         editAs: 'absolute'
       });
